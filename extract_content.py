@@ -1,0 +1,7 @@
+from random import sample
+import pandas as pd
+
+out_dir = "./out/"
+df = pd.read_csv(out_dir+"sample.csv")
+con = df["content"]
+con.to_csv(out_dir+"content.csv")

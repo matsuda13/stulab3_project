@@ -14,4 +14,4 @@ sliced_scraped_tweets = itertools.islice(scraped_tweets, 100)
 #データフレームに変換する
 df = pd.DataFrame(sliced_scraped_tweets) 
 
-df.to_csv("sample.csv")
+df.to_csv("./out/sample.csv")
