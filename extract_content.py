@@ -6,3 +6,6 @@ def extract_content():
     df = pd.read_csv(out_dir+"sample.csv")
     con = df["content"]
     con.to_csv(out_dir+"content.csv")
+
+if __name__ == "__main__":
+    extract_content()
