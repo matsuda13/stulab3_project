@@ -6,7 +6,7 @@ import neologdn
 
 re_and = re.compile(' &[ !]')
 PATH = 'pn.csv.m3.120408.trim'
-with open(PATH) as fd:
+with open(PATH, encoding="utf-8") as fd:
     word_dict = {}
     for line in fd:
         word, polarity, word_type = line.split('\t')

@@ -2,7 +2,7 @@
 import json
 
 PATH = 'wago.121808.pn'
-with open(PATH) as fd:
+with open(PATH, encoding="utf-8") as fd:
     wago_dict = {}
     for line in fd:
         try:
