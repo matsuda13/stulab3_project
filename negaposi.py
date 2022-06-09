@@ -20,5 +20,5 @@ def judgement(text):
 
 if __name__ == "__main__":
     df['negaposi'] = df['content'].map(judgement)
-    print(df.head())
-    df.to_csv(out_dir+"judge.csv")
+    df = df[df["negaposi"]<0]
+    df.to_csv(out_dir+"nega.csv",index=False)
