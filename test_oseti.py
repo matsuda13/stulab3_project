@@ -1,5 +1,6 @@
 import oseti
 from oseti.oseti import Analyzer
+import numpy as np
 
 import pandas as pd
 
