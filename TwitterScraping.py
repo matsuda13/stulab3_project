@@ -10,7 +10,7 @@ def Twitterscraping():
     #Twitterでスクレイピングを行い特定キーワードの情報を取得
     scraped_tweets = sntwitter.TwitterSearchScraper(search).get_items()
     # #最初の10ツイートだけを取得し格
-    sliced_scraped_tweets = itertools.islice(scraped_tweets, 1000)
+    sliced_scraped_tweets = itertools.islice(scraped_tweets, 25000)
     #データフレームに変換する
     df = pd.DataFrame(sliced_scraped_tweets) 
     if not os.path.isdir(out_dir):
