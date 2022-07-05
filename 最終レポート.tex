@@ -1,0 +1,57 @@
+\documentclass[a4paper, 11pt, titlepage]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{url}
+
+\title{知能情報実験III（データマイニング班）\\Twitter上のテキスト文を対象とした「コロナで何が困っているのか」を見つける}
+\author{グループの学籍番号 205759A, 205720E, 205763J, 195719J}
+\date{提出日：2022年6月9日}
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+
+\section{はじめに}
+\subsection{概要}
+本実験では、グループでテーマを決めて、半年間でデータ解析に取り組むグループワークである。グループワークを通して、機械学習や実験再現のためのドキュメント作成等を目指す。
+
+\subsection{テーマ：Twitter上のテキスト文を対象とした「コロナで何が困っているのか」を見つけるとは}
+本グループではTwitter上のテキスト文を対象として「コロナで困っていること」を見つけることを対象問題として設定した。SNSを使ってコロナで発生している問題を可視化し、件数が多い項目を整理することで、その後の改善策を見出して今後に応用できる。それによって現在発生している問題に対処しつつ今後同様の問題が発生する際により効果的な対策ができるようになることが期待できる。
+
+\section{実験方法}
+\subsection{実験目的}
+コロナで何が困っているのかがわかることで、その後の改善策を見出すことができ、今後に応用するために、Twitter上のテキスト文を用いて解析する。
+
+
+%Twitter上のテキスト文を対象として「コロナで何が困っているのか」という事柄を視覚的にわかるようした。具体的な内容として、まず、Twitter上のテキスト文のなかから「コロナ」という単語が含まれた文章を抽出し、ネガティブかポジティブかの判定を行った。次に、その結果の中からネガティブな文章を取り出し、クラスタリングを行った。最後に、クラスタリングされた事柄の中で発言している人数が多い順に順位付けを行うことで優先的に対処しなければならない事柄を視覚的にわかるようにした。
+
+\subsection{データセット構築}
+Pythonのsnscrapeライブラリ・モジュールを使用し、データセットをsample.csvに出力した\cite{snscrape}。次に、sample.csvを読み込み、contentカラムだけを取り出すことで、tweetの文章だけをcontent.csvに出力した。このcsvファイルと、日本語評価極性辞書を利用したPython用Sentiment Analysisライブラリosetiを使ってネガティブとポジティブに分けた\cite{oseti}。その後、ネガティブに判定されたtweetだけを抽出し、nega.csvに出力した。
+
+\subsection{モデル選定}
+
+
+\subsection{パラメータ調整}
+
+
+\section{実験結果}
+
+
+\section{考察}
+\subsection{考察のトピック数について}
+
+\section{意図していた実験計画との違い}
+
+
+\section{まとめ}
+
+
+\begin{thebibliography}{n}
+  \bibitem{kanazawa}レポート作成の手引き　レポートの基本的形式に関するガイド, \url{https://www.kanazawa-u.ac.jp/wp-content/uploads/2015/01/tebiki2.pdf}, 2020/07/02.
+   \bibitem{snscrape}Men of Letters（メン・オブ・レターズ） - 論理的思考/業務改善/プログラミング, \url{https://laboratory.kazuuu.net/using-python-to-scrape-social-networking-sites-using-snscrape/}, 2022/07/02.
+    \bibitem{oseti}osetiによる日本語の感情分析, \url{https://note.com/npaka/n/n3c7722d2e4bc}, 2022/07/02.
+      
+
+\end{thebibliography}
+\end{document}
