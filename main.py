@@ -1,8 +1,6 @@
 import sys
 import os
-from TwitterScraping import Twitterscraping
-from extract_content import extract_content
-from negaposi import negaposi
+from module import Twitterscraping, extract_content, negaposi
 
 def main():
     args = sys.argv
