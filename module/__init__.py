@@ -13,6 +13,10 @@ ana = Analyzer()
 
 #ツイート検索するキーワード
 def Twitterscraping():
+    """
+    Get 1000 tweets from twitter then transform tweets to csv file.
+    Filename is "sample.csv".
+    """
     out_dir = "./out"
     search = "コロナ"
     #Twitterでスクレイピングを行い特定キーワードの情報を取得
@@ -27,12 +31,24 @@ def Twitterscraping():
 
 
 def extract_content():
+    """
+    Sntwitter item has url, date, id, and many other data.
+    Extract only contents.
+    """
     out_dir = "./out/"
     df = pd.read_csv(out_dir+"sample.csv")
     con = df["content"]
     con.to_csv(out_dir+"content.csv", index=False)
     
 def judge(text):
+    """_summary_
+
+    Args:
+        text (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     try:
         review=ana.analyze(text)
         re_view= np.average(review)
@@ -42,6 +58,8 @@ def judge(text):
         return 1
 
 def negaposi():
+    """_summary_
+    """
     out_dir = "./out/"
     df = pd.read_csv(out_dir+"content.csv")
     for t in df["content"]:
