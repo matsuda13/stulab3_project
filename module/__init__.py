@@ -6,11 +6,8 @@ import snscrape.modules.twitter as sntwitter #pip install snscrape
 import oseti
 import numpy as np
 from oseti.oseti import Analyzer
-import pandas as pd
 import MeCab
 import gensim
-import numpy as np
-import matplotlib.pyplot as plt
 import ipadic
 import pyLDAvis
 import pyLDAvis.gensim_models
@@ -20,19 +17,18 @@ import pandas as pd
 ana = Analyzer()
 n_cluster = 4
 
-#ツイート検索するキーワード
 def Twitterscraping():
     """
-    Get 1000 tweets from twitter then transform tweets to csv file.
-    Filename is "sample.csv".
+    Retrieve 25,000 texts containing "Corona" from users, user profiles, hashtags, searches, tweets (single or threaded), list posts, and trends. Then output to csv file.
+    Filename is "scraping_results.csv".
     """
     out_dir = "./out"
-    search = "コロナ"
-    #Twitterでスクレイピングを行い特定キーワードの情報を取得
+    search = "コロナ" # ツイート検索するキーワード
+    # Twitterでスクレイピングを行い特定キーワードの情報を取得
     scraped_tweets = sntwitter.TwitterSearchScraper(search).get_items()
-    # #最初の10ツイートだけを取得し格
-    sliced_scraped_tweets = itertools.islice(scraped_tweets, 10)
-    #データフレームに変換する
+    # 最初の25000ツイートだけを取得し格納する
+    sliced_scraped_tweets = itertools.islice(scraped_tweets, 25000)
+    # データフレームに変換する
     df = pd.DataFrame(sliced_scraped_tweets)
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
@@ -41,7 +37,7 @@ def Twitterscraping():
 
 def extract_content():
     """
-    Sntwitter item has url, date, id, and many other data.
+    "scraping_results.csv" have various data such as URL, date, ID, etc.
     Extract only contents.
     """
     out_dir = "./out/"
@@ -50,20 +46,19 @@ def extract_content():
     con.to_csv(out_dir+"content.csv", index=False)
     
 def judge(text):
-    """_summary_
-
+    """
+    Judges text as negative-positive.
     Args:
-        text (_type_): _description_
+        text (String): contents(include tweets, hashtags and replies.)
 
     Returns:
-        _type_: _description_
+        int: score(Closer to -1 is considered positive and closer to -1 is considered negative.)
     """
     try:
-        review=ana.analyze(text)
-        re_view= np.average(review)
+        review = ana.analyze(text)
+        re_view = np.average(review)
         return re_view
     except:
-    #review = ana.analyze(text)
         return 1
 
 def negaposi():
