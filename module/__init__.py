@@ -12,8 +12,6 @@ import ipadic
 import pyLDAvis
 import pyLDAvis.gensim_models
 
-import pandas as pd
-
 ana = Analyzer()
 n_cluster = 4
 
