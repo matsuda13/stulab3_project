@@ -6,10 +6,19 @@ import snscrape.modules.twitter as sntwitter #pip install snscrape
 import oseti
 import numpy as np
 from oseti.oseti import Analyzer
+import pandas as pd
+import MeCab
+import gensim
+import numpy as np
+import matplotlib.pyplot as plt
+import ipadic
+import pyLDAvis
+import pyLDAvis.gensim_models
 
 import pandas as pd
 
 ana = Analyzer()
+n_cluster = 4
 
 #ツイート検索するキーワード
 def Twitterscraping():
@@ -22,7 +31,7 @@ def Twitterscraping():
     #Twitterでスクレイピングを行い特定キーワードの情報を取得
     scraped_tweets = sntwitter.TwitterSearchScraper(search).get_items()
     # #最初の10ツイートだけを取得し格
-    sliced_scraped_tweets = itertools.islice(scraped_tweets, 1000)
+    sliced_scraped_tweets = itertools.islice(scraped_tweets, 10)
     #データフレームに変換する
     df = pd.DataFrame(sliced_scraped_tweets)
     if not os.path.isdir(out_dir):
@@ -68,3 +77,63 @@ def negaposi():
     df['negaposi'] = df['content'].map(judge)
     df = df[df["negaposi"]<0]
     df.to_csv(out_dir+"nega.csv",index=False)
+
+
+
+def parse(tweet_temp):
+    t = MeCab.Tagger(ipadic.MECAB_ARGS)
+    temp1 = t.parse(tweet_temp)
+    temp2 = temp1.split("\n")
+    t_list = []
+    for keitaiso in temp2:
+        if keitaiso not in ["EOS", ""]:
+            word, hinshi = keitaiso.split("\t")
+            t_temp = [word] + hinshi.split(",")
+            if len(t_temp) != 10:
+                t_temp += ["*"]*(10-len(t_temp))
+            t_list.append(t_temp)
+    return t_list
+
+def parse_to_df(tweet_temp):
+    return pd.DataFrame(parse(tweet_temp),
+                        columns=["単語","品詞","品詞細分類1",
+                                 "品詞細分類2","品詞細分類3",
+                                 "活用型","活用形","原形","読み","発音"])
+    
+def make_lda_docs(texts):
+    docs = []
+    for text in texts:
+        df = parse_to_df(text)
+        extract_df = df[(df["品詞"]+"/"+df["品詞細分類1"]).isin(["名詞/一般","名詞/固有名詞"])]
+        extract_df = extract_df[extract_df["原形"]!="*"]
+        doc = []
+        for genkei in extract_df["原形"]:
+            doc.append(genkei)
+        docs.append(doc)
+    return docs
+
+def do_lda():
+    nega = pd.read_csv("./out/nega.csv")
+    texts = nega["content"].values
+    docs = make_lda_docs(texts)
+    dictionary = gensim.corpora.Dictionary(docs)
+    corpus = [dictionary.doc2bow(doc) for doc in docs]
+    n_cluster = 4
+    lda = gensim.models.LdaModel(
+                corpus=corpus,
+                id2word=dictionary,
+                num_topics=n_cluster,
+                minimum_probability=0.001,
+                passes=20,
+                update_every=0,
+                chunksize=10000,
+                random_state=1
+    )
+    corpus_lda = lda[corpus]
+    arr = gensim.matutils.corpus2dense(
+        corpus_lda,
+        num_terms=n_cluster
+    ).T
+    vis = pyLDAvis.gensim_models.prepare(lda, corpus, dictionary, sort_topics=False)
+    pyLDAvis.save_html(vis, "./out/pyldavis_output.html")
+    

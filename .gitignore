@@ -5,3 +5,4 @@ report/*/*.out
 report/*/*.synctex.gz
 out
 report/report-template.pdf
+*.ipynb
