@@ -37,6 +37,7 @@ def extract_content():
     """
     "scraping_results.csv" have various data such as URL, date, ID, etc.
     Extract only contents.
+    Filename is "contents.csv".
     """
     out_dir = "./out/"
     df = pd.read_csv(out_dir+"sample.csv")
@@ -60,7 +61,9 @@ def judge(text):
         return 1
 
 def negaposi():
-    """_summary_
+    """
+    Output the text for which the result of the judge function was less than 0.
+    Filename is "negative.csv".
     """
     out_dir = "./out/"
     df = pd.read_csv(out_dir+"content.csv")
