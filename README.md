@@ -10,6 +10,8 @@ Twitterから「コロナ」という単語を含むツイートを取得し、
 * ipadic 1.0.0
 * mecab-python3 1.0.5
 
+
+# Usage
 **cd stulab3_project**
 
 **python main.py options**
