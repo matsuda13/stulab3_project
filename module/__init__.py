@@ -25,12 +25,12 @@ def Twitterscraping():
     # Twitterでスクレイピングを行い特定キーワードの情報を取得
     scraped_tweets = sntwitter.TwitterSearchScraper(search).get_items()
     # 最初の25000ツイートだけを取得し格納する
-    sliced_scraped_tweets = itertools.islice(scraped_tweets, 25000)
+    sliced_scraped_tweets = itertools.islice(scraped_tweets, 10)
     # データフレームに変換する
     df = pd.DataFrame(sliced_scraped_tweets)
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
-    df.to_csv("./out/sample.csv")
+    df.to_csv("./out/scraping_results.csv")
 
 
 def extract_content():
@@ -40,9 +40,9 @@ def extract_content():
     Filename is "contents.csv".
     """
     out_dir = "./out/"
-    df = pd.read_csv(out_dir+"sample.csv")
+    df = pd.read_csv(out_dir+"scraping_results.csv")
     con = df["content"]
-    con.to_csv(out_dir+"content.csv", index=False)
+    con.to_csv(out_dir+"contents.csv", index=False)
     
 def judge(text):
     """
@@ -66,13 +66,13 @@ def negaposi():
     Filename is "negative.csv".
     """
     out_dir = "./out/"
-    df = pd.read_csv(out_dir+"content.csv")
+    df = pd.read_csv(out_dir+"contents.csv")
     for t in df["content"]:
         if t==0:
             print("空白")
     df['negaposi'] = df['content'].map(judge)
     df = df[df["negaposi"]<0]
-    df.to_csv(out_dir+"nega.csv",index=False)
+    df.to_csv(out_dir+"negative.csv",index=False)
 
 
 
@@ -109,7 +109,7 @@ def make_lda_docs(texts):
     return docs
 
 def do_lda():
-    nega = pd.read_csv("./out/nega.csv")
+    nega = pd.read_csv("./out/negative.csv")
     texts = nega["content"].values
     docs = make_lda_docs(texts)
     dictionary = gensim.corpora.Dictionary(docs)
@@ -126,6 +126,10 @@ def do_lda():
                 random_state=1
     )
     corpus_lda = lda[corpus]
+    arr = gensim.matutils.corpus2dense(
+        corpus_lda,
+        num_terms=n_cluster
+    ).T
     vis = pyLDAvis.gensim_models.prepare(lda, corpus, dictionary, sort_topics=False)
     pyLDAvis.save_html(vis, "./out/pyldavis_output.html")
     
