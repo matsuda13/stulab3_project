@@ -5,7 +5,7 @@ from module import Twitterscraping, do_lda, extract_content, negaposi, do_lda
 
 def main():
     parser = argparse.ArgumentParser(description="do lda")
-    parser.add_argument("--reset", help="help", action="store_true")
+    parser.add_argument("--reset", help="Clear output file and retry scraping.", action="store_true")
     args = parser.parse_args()
     if args.reset or not os.path.exists("./out"):
         if os.path.exists("./out"):
