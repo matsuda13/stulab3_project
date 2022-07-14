@@ -123,10 +123,6 @@ def do_lda():
                 random_state=1
     )
     corpus_lda = lda[corpus]
-    arr = gensim.matutils.corpus2dense(
-        corpus_lda,
-        num_terms=n_cluster
-    ).T
     vis = pyLDAvis.gensim_models.prepare(lda, corpus, dictionary, sort_topics=False)
     pyLDAvis.save_html(vis, "./out/pyldavis_output.html")
     
