@@ -1,9 +1,9 @@
 \documentclass[a4paper, 11pt, titlepage]{jsarticle}
-\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{hyperref,graphicx}
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{url}
-\usepackage[dvipdfmx]{hyperref}
+
 
 \title{知能情報実験III（データマイニング班）\\Twitter上のテキスト文を対象とした「コロナで何が困っているのか」を見つける}
 \author{グループの学籍番号 205759A, 205720E, 205763J, 195719J}
@@ -47,7 +47,8 @@ pyLDAvisを使用してトピックモデリングの内容をhtmlに出力し�
 　しかし、snscrapeを用いて「コロナ」という単語を含めたツイートを取得する際、snscrapeは単語だけでなく、ユーザ名やタグからも取得することに加え、同じtweetにコロナという単語が複数回使われている可能性もある。そのため、一概にコロナという単語数の割合が多ければ優先度の高いトピックとはならない可能性もある。\\
 　また、今回の実験は参考資料をもとに行っていたため、LDAのパラメータを理解し、調整するなどを行えていない。今後、より今回の実験に合わせたモデルの構築を行うことができればより良い結果が出るのではないかと考える。また、データの数としてネガティブとして判定されたツイート数は約1万件だった。今回の実験としてこのデータ数が最適なのかということも考えなければならない。
 
-%\subsection{追加実験}
+\subsection{追加実験}
+(まだ実験していないので書いていません。)
 
 \section{意図していた実験計画との違い}
 
