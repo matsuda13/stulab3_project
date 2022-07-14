@@ -1,5 +1,15 @@
+Twitterから「コロナ」という単語を含むツイートを取得し、
+ネガポジ判定、トピックモデリングを自動で行うpythonプログラムです。
 
-**python main.py -options**
+# Requirement
+* PyLDAvis 3.3.1
+* snscrape 0.4.3.20220106
+* sengiri 0.2.1
 
-options:
--r: retry twitter scraping
+**cd stulab3_project**
+
+**python main.py options**
+
+**option**
+-h, --help: 
+--reset: retry twitter scraping
