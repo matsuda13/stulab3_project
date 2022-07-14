@@ -3,6 +3,6 @@ report/*/*.log
 report/*/*.toc
 report/*/*.out
 report/*/*.synctex.gz
-out
+out/
 report/report-template.pdf
 *.ipynb
