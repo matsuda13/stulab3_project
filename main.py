@@ -5,10 +5,9 @@ from module import Twitterscraping, do_lda, extract_content, negaposi, do_lda
 
 def main():
     parser = argparse.ArgumentParser(description="do lda")
-    parser.add_argument("-r", help="help", default=1)
-    arg = parser.parse_args("-r 1".split())
-    print(arg)
-    if not os.path.exists("./out"):
+    parser.add_argument("--reset", help="help", action="store_true")
+    args = parser.parse_args()
+    if args.reset or not os.path.exists("./out"):
         if os.path.exists("./out"):
             shutil.rmtree("./out")
         print("twitter scraping...")
