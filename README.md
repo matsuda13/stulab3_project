@@ -10,6 +10,6 @@ Twitterから「コロナ」という単語を含むツイートを取得し、
 
 **python main.py options**
 
-**option**
--h, --help: 
---reset: retry twitter scraping
+# option
+* -h, --help: show help
+* --reset: retry twitter scraping
