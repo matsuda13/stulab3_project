@@ -17,8 +17,8 @@ n_cluster = 4
 
 def Twitterscraping():
     """
-    Retrieve 25,000 texts containing "Corona" from users, user profiles, hashtags, searches, tweets (single or threaded), list posts, and trends. Then output to csv file.
-    Filename is "scraping_results.csv".
+    ユーザー、ユーザープロファイル、ハッシュタグ、検索、ツイート（単一またはスレッド）、リスト投稿、トレンドから「コロナ」を含むテキストを25,000件取得する。その後、csvファイルに出力する。
+    ファイル名は ”scraping_results.csv” である。
     """
     out_dir = "./out"
     search = "コロナ" # ツイート検索するキーワード
@@ -35,9 +35,8 @@ def Twitterscraping():
 
 def extract_content():
     """
-    "scraping_results.csv" have various data such as URL, date, ID, etc.
-    Extract only contents.
-    Filename is "contents.csv".
+    "scraping_results.csv" には、URL、日付、IDなど、様々なデータが含まれている。その内、contentのみを抽出する。
+    ファイル名は "contents.csv" である。
     """
     out_dir = "./out/"
     df = pd.read_csv(out_dir+"scraping_results.csv")
@@ -46,12 +45,11 @@ def extract_content():
     
 def judge(text):
     """
-    Judges text as negative-positive.
+    テキストをネガポジ判定する。
     Args:
-        text (String): contents(include tweets, hashtags and replies.)
-
+        text (str): 内容（ツイート、ハッシュタグ、リプライを含む。)
     Returns:
-        int: score(Closer to -1 is considered positive and closer to -1 is considered negative.)
+        int: score(-1に近いほどポジティブ、-1に近いほどネガティブと判定される。)
     """
     try:
         review = ana.analyze(text)
@@ -62,8 +60,8 @@ def judge(text):
 
 def negaposi():
     """
-    Output the text for which the result of the judge function was less than 0.
-    Filename is "negative.csv".
+    判定関数の結果が0未満であったテキストを出力する。
+    ファイル名は "negative.csv" である。
     """
     out_dir = "./out/"
     df = pd.read_csv(out_dir+"contents.csv")
@@ -91,6 +89,14 @@ def parse(tweet_temp):
     return t_list
 
 def parse_to_df(tweet_temp):
+    """negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)をparse関数で形態素解析する。その後、カラムを形態素の種類ごとに設定したデータフレームを作成し、parse関数の結果を該当するカラムに保存する。作成したデータフレームを戻り値として返す。
+
+    Args:
+        tweet_temp (numpy.ndarray): negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)
+
+    Returns:
+        pandas.core.frame.DataFrame: カラムを形態素の種類ごとに設定したデータフレーム。該当するカラムにparse関数の結果を保存している。
+    """
     return pd.DataFrame(parse(tweet_temp),
                         columns=["単語","品詞","品詞細分類1",
                                  "品詞細分類2","品詞細分類3",
