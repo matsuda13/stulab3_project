@@ -97,6 +97,14 @@ def parse_to_df(tweet_temp):
                                  "活用型","活用形","原形","読み","発音"])
     
 def make_lda_docs(texts):
+    """
+    Save words in Bag-of-Words format.
+    Args:
+    texts(String): negative.csvのcontentカラムに保存されている値
+
+    Returns:
+    String: 一般名詞と固有名詞のみ
+    """
     docs = []
     for text in texts:
         df = parse_to_df(text)
@@ -109,6 +117,12 @@ def make_lda_docs(texts):
     return docs
 
 def do_lda():
+    """
+    コーパス作成の後, クラスター数4個のLDAモデルで学習.
+    学習したldaのベクトルをarrに格納.
+    pyldavizによる結果をpyldavis_output.htmlで保存.
+    """
+
     nega = pd.read_csv("./out/negative.csv")
     texts = nega["content"].values
     docs = make_lda_docs(texts)
