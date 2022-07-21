@@ -14,21 +14,16 @@ def main():
         Twitterscraping()
         print("extracting...")
         extract_content()
-        try:
-            print("judging...")
-            negaposi()
-        except:
-            print("something went wrong.")
+        print("judging...")
+        negaposi()
+
     else:
         print("skip scraping.")
         print("skip extract.")
         print("skip judge.")
-    try:
-        print("topic modeling...")
-        do_lda()
-        print("complete!")
-    except:
-        print("lda dekinaiyo")
+    print("topic modeling...")
+    do_lda()
+    print("complete!")
     
 
 if __name__ == "__main__":
