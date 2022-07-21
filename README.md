@@ -14,8 +14,8 @@ Twitterから「コロナ」という単語を含むツイートを取得し、
 # Usage
 **cd stulab3_project**
 
-**python main.py options**
+**python main.py**
 
 # option
 * -h, --help: show help
-* --reset: retry twitter scraping
+* -r, --reset: retry twitter scraping
