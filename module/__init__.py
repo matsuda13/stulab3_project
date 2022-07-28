@@ -75,6 +75,14 @@ def negaposi():
 
 
 def parse(tweet_temp):
+    """引数で与えられたテキストを形態素解析する。
+
+    Args:
+        tweet_temp (_type_): negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)。
+
+    Returns:
+        list: 形態素解析した結果をリストに保存する。
+    """
     t = MeCab.Tagger(ipadic.MECAB_ARGS)
     temp1 = t.parse(tweet_temp)
     temp2 = temp1.split("\n")

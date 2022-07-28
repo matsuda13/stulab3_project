@@ -28,7 +28,20 @@
 %Twitter上のテキスト文を対象として「コロナで何が困っているのか」という事柄を視覚的にわかるようした。具体的な内容として、まず、Twitter上のテキスト文のなかから「コロナ」という単語が含まれた文章を抽出し、ネガティブかポジティブかの判定を行った。次に、その結果の中からネガティブな文章を取り出し、クラスタリングを行った。最後に、クラスタリングされた事柄の中で発言している人数が多い順に順位付けを行うことで優先的に対処しなければならない事柄を視覚的にわかるようにした。
 
 \subsection{データセット構築}
-Twitterscraping.pyを実行することで、Pythonのsnscrapeライブラリ・モジュールを使用して、Twitter上のテキスト文のなかから「コロナ」という単語が含まれた文章を抽出し、それらをデータセットとしてsample.csvに出力した\cite{snscrape}。次に、extract\_content.pyを実行してsample.csvを読み込み、contentカラムだけを取り出すことで、tweetの文章だけをcontent.csvに出力した。negaposi.pyを実行することで、このcsvファイルと、日本語評価極性辞書を利用したPython用Sentiment Analysisライブラリosetiを使ってネガティブとポジティブに分けた\cite{oseti}。そして、ネガティブに判定されたtweetだけを抽出し、nega.csvに出力した。
+以下にデータセット構築におけるアクティビティ図を示す。？
+
+Twitterscraping()：Python のsnscrape ライブラリ・モジュールを使用して、ユーザー、ユーザープロファイル、ハッシュタグ、検索、ツイート（単一またはスレッド）、リスト投稿、トレンドから「コロナ」を含むテキストを取得する。件数(行数)は25,000件である。そして、それをデータフレームに変換する\cite{snscrape1}。その後、df.to_csv()でテキストをカンマを区切り値としたcsvファイルに書き出す\cite{snscrape2}。
+scraping_results.csv：カンマを区切り値としたcsvファイル。UTF-8 Unicodeテキストで書かれており、非常に長い行(25000件)を持つ。スクレイピングした結果が保存されている。
+extract_content()：pandas.read_csv()でscraping_results.csvをデータフレームとして読み込む\cite{snscrape3}。このデータフレームのうち、contentカラムの列だけで新たなデータフレームを作り、そのデータフレームをdf.to_csv()でcsvファイルに書き出す。
+contents.csv：カンマを区切り値としたcsvファイル。UTF-8 Unicodeテキストで書かれており、非常に長い行(25000件)を持つ。スクレイピングした結果のうち、ツイートとリツイートのテキストが保存されている。
+judge(text)：引数で渡されたテキストを、日本語評価極性辞書を利用したPython 用 Sentiment Analysis ライブラリoseti を使ってネガポジ判定()を行う\cite{negaposi1}。評価極性のスコアが 1 に近いほどポジティブで、 -1 に近いほどネガティブとなる。osetiを使ってネガポジ判定をしているサイトを参考にコードを書いた\cite{negaposi2}。
+negaposi()：pandas.read_csv()でcontents.csvファイルをデータフレームとして読み込む。そして、データフレームに保存されているテキストを引数として、judge(text)を実行し、その戻り値を新たなカラムnegaposiに保存する。その後、negaposiカラムの値が 0 よりも大きい行を消し、新たなデータフレームを作る。そのデータフレームをdf.to_csv()でcsvファイルに書き出す。
+negative.csv：カンマを区切り値としたcsvファイル。UTF-8 Unicodeテキストで書かれている。ツイートとリツイートのテキストのうち、ネガティブと判定されたテキストが保存されている。
+parse(tweet_temp)：negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)を引数で受け取る？Mecabを使って形態素を分ける[]。？
+形態素解析エンジンのMecabを使って、形態素解析をする\cite{keitaiso1}。まず、negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)を対象に、
+
+Mecabを使ってネガポジ判定をしているサイトを参考にコードを書いた\cite{keitaiso2}。
+parse_to_df(tweet_temp)：negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)をparse関数で形態素解析する。その後、カラムを形態素の種類ごとに設定したデータフレームを作成し、parse関数の結果を該当するカラムに保存する。作成したデータフレームを戻り値として返す。
 
 \subsection{モデル選定}
 実験目的に沿って、教師なし学習で文書のクラスタリングを行うためLDA(トピックモデル)を使用した。また、トピックモデルはpyLDAvisを用いてインタラクティブに可視化できる部分もLDAを選んだ理由である。 
@@ -88,7 +101,14 @@ pyLDAvisを使用してトピックモデリングの内容をhtmlに出力し�
    \bibitem{snscrape}Men of Letters（メン・オブ・レターズ） - 論理的思考/業務改善/プログラミング, \url{https://laboratory.kazuuu.net/using-python-to-scrape-social-networking-sites-using-snscrape/}, 2022/07/02.
     \bibitem{oseti}osetiによる日本語の感情分析, \url{https://note.com/npaka/n/n3c7722d2e4bc}, 2022/07/02.
 \bibitem{LDA}Shingoの数学ノート, \url{http://mathshingo.chillout.jp/blog27.html}, 2022/07/05.
-      
+      \bibitem{snscrape1}snscrape, \url{https://github.com/JustAnotherArchivist/snscrape}, 2020/07/02.
+      \bibitem{snscrape2}pandas documentation, \url{https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html}, 2020/07/02.
+      \bibitem{snscrape3}pandas documentation, \url{https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas.read_csv}, 2020/07/02.
+      \bibitem{negaposi1}日本語評価極性辞書を利用したPython用Sentiment Analysisライブラリ oseti を公開しました, \url{https://qiita.com/yukinoi/items/46aa016d83bb0e64f598}, 2020/07/02.
+      \bibitem{negaposi2}osetiによる日本語の感情分析, \url{https://note.com/npaka/n/n3c7722d2e4bc}, 2020/07/02..
+      \bibitem{keitaiso1}MeCab: Yet Another Part-of-Speech and Morphological Analyzer, \url{https://taku910.github.io/mecab/}, 2020/07/02.
+      \bibitem{keitaiso2}Mecab（形態素解析）で遊んでみた！, \url{https://qiita.com/str32/items/c1ced3b017ff5cacc4dc}, 2020/07/02.
+      \bibitem{}snscrape, \url{}, 2020/07/02.
 
 \end{thebibliography}
 \end{document}
