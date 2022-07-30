@@ -15,12 +15,12 @@ import pyLDAvis.gensim_models
 ana = Analyzer()
 n_cluster = 4
 
-def Twitterscraping():
+def Twitterscraping(out_dir):
     """
     ユーザー、ユーザープロファイル、ハッシュタグ、検索、ツイート（単一またはスレッド）、リスト投稿、トレンドから「コロナ」を含むテキストを25,000件取得する。その後、csvファイルに出力する。
     ファイル名は ”scraping_results.csv” である。
     """
-    out_dir = "./out"
+    
     search = "コロナ" # ツイート検索するキーワード
     # Twitterでスクレイピングを行い特定キーワードの情報を取得
     scraped_tweets = sntwitter.TwitterSearchScraper(search).get_items()
@@ -49,7 +49,7 @@ def judge(text):
     Args:
         text (str): 内容（ツイート、ハッシュタグ、リプライを含む。)
     Returns:
-        int: score(-1に近いほどポジティブ、-1に近いほどネガティブと判定される。)
+        int: score(1に近いほどポジティブ、-1に近いほどネガティブと判定される。)
     """
     try:
         review = ana.analyze(text)
@@ -95,6 +95,7 @@ def parse(tweet_temp):
                 t_temp += ["*"]*(10-len(t_temp))
             t_list.append(t_temp)
     return t_list
+    
 
 def parse_to_df(tweet_temp):
     """negative.csvのcontentカラムに保存されている値の１つ(1ツイート文)をparse関数で形態素解析する。その後、カラムを形態素の種類ごとに設定したデータフレームを作成し、parse関数の結果を該当するカラムに保存する。作成したデータフレームを戻り値として返す。
