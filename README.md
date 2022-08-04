@@ -1,5 +1,7 @@
 Twitterから「コロナ」という単語を含むツイートを取得し、
 ネガポジ判定、トピックモデリングを自動で行うpythonプログラムです。
+# License
+oseti v0.2| MIT License | [osetiのgithub](https://github.com/ikegami-yukino/oseti)
 
 # Requirement
 * Python 3.7~
